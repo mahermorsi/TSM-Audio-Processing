@@ -7,8 +7,8 @@ The primary goal of this project is to gain experience with the Overlap-Add (OLA
 ## Outline
 
 1. **Download the WSOLA function**: 
-   - Obtain `wsola.m` from [Audiolabs TSM Toolbox](https://www.audiolabs-erlangen.de/resources/MIR/TSMtoolbox/) or from the course site as `wsola_TSM.m`.
-   - Downloading the entire package is not necessary.
+   - Obtain `wsola.m` from [Audiolabs TSM Toolbox](https://www.audiolabs-erlangen.de/resources/MIR/TSMtoolbox/).
+   - Download the whole package, and add its path to the project.
 
 2. **Test OLA and WSOLA** using different inputs as detailed in the "Experiments and Plots" section.
 
