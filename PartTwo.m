@@ -1,0 +1,33 @@
+fs = 44100;
+N = 1024;
+Hs = N/2;
+delta = Hs;
+alfa_min = 0.125;
+alfa_max = 8;
+t = 0:1/fs:2-1/fs;
+x = cos(2*pi*261*t) + 0.4*cos(2*pi*783*t);
+
+x = x';
+
+clear parameter
+parameter.synHop = Hs;
+%parameter.win = rectwin(N);
+parameter.win = win(N,2);
+parameter.tolerance = delta;
+
+y_slow = wsolaTSM(x,alfa_max,parameter);
+y_fast = wsolaTSM(x,alfa_min,parameter);
+
+paramVis.title = 'faster signal';
+visualizeWav(y_fast,paramVis);
+
+paramVis.title = 'slower signal';
+visualizeWav(y_slow,paramVis);
+
+outputDir = './Part Two audio outputs';  % Specify the output directory
+if ~exist(outputDir, 'dir')
+    mkdir(outputDir);  % Create the directory if it doesn't exist
+end
+audiowrite(fullfile(outputDir, 'Original C4.wav'), x, fs);
+audiowrite(fullfile(outputDir, [sprintf('%0.2f',alfa_min) '_faster_WSOLA.wav']), y_fast, fs);
+audiowrite(fullfile(outputDir, [sprintf('%0.2f',alfa_max) '_slower_WSOLA.wav']), y_slow, fs);

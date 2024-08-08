@@ -62,9 +62,13 @@ function plot_and_save_pitch_shifted_signals(x, targetNote, y_OLA, y_WSOLA, fs)
     % Save the transposed signals for listening test
     outputFilename_OLA = ['C4 to ', targetNote, ' using OLA.wav'];
     outputFilename_WSOLA = ['C4 to ', targetNote, ' using WSOLA.wav'];
+    outputDir = './Part One audio outputs';  % Specify the output directory
+    if ~exist(outputDir, 'dir')
+        mkdir(outputDir);  % Create the directory if it doesn't exist
+    end
 
-    audiowrite(outputFilename_OLA, y_OLA, fs);
-    audiowrite(outputFilename_WSOLA, y_WSOLA, fs);
+    audiowrite(fullfile(outputDir,outputFilename_OLA), y_OLA, fs);
+    audiowrite(fullfile(outputDir,outputFilename_WSOLA), y_WSOLA, fs);
 
     disp(['OLA pitch-shifted file saved to: ' outputFilename_OLA]);
     disp(['WSOLA pitch-shifted file saved to: ' outputFilename_WSOLA]);
