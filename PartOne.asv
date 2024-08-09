@@ -23,49 +23,44 @@ parameter.algTSM = @wsolaTSM; % WSOLA function in TSM toolbox
 y_G4_WSOLA = pitchShiftViaTSM(x, n_G4, parameter);
 y_F3_WSOLA = pitchShiftViaTSM(x, n_F3, parameter);
 
+paramVis.title = 'WSOLA';
+visualizeWav(yWSOLA,paramVis);
 % Plot amplitude versus time
 plot_and_save_pitch_shifted_signals(x, 'G4',y_G4_OLA,y_G4_WSOLA,fs);
 plot_and_save_pitch_shifted_signals(x, 'F3',y_F3_OLA,y_F3_WSOLA,fs);
 
-plot_and_save_fft(y_G4_OLA, y_G4_WSOLA, fs, 'G4');
-plot_and_save_fft(y_F3_OLA, y_F3_WSOLA, fs, 'F3');
 
-function plot_and_save_fft(y_OLA, y_WSOLA, fs, targetNote)
-    % Compute the FFT for OLA and WSOLA signals
-    Y_OLA = fft(y_OLA);
-    Y_WSOLA = fft(y_WSOLA);
 
-    % Frequency vector for plotting
-    N = length(Y_OLA);
-    f = (0:N-1)*(fs/N);
+function plot_fft_pitch_shifted_signals(x,targetNote, y_OLA, yWSOLA, fs)
+ % Time vector for the original signal
+    t = (0:length(y_OLA)-1) / fs;
 
-    % Plot the FFT for OLA
+    % Plot the original signal
     figure;
-    subplot(2,1,1);
-    plot(f, abs(Y_OLA)/max(abs(Y_OLA))); % Normalize FFT for better visualization
-    title(['FFT of Transposed Signal to ', targetNote, ' using OLA']);
-    xlabel('Frequency (Hz)');
-    ylabel('Magnitude (Normalized)');
-    xlim([0 2000]); % Focus on the relevant frequency range
+    subplot(3,1,1);
+    plot(t, x); % Assuming the original signal is y_OLA for plotting
+    title('Original Signal');
+    xlabel('Time (s)');
+    ylabel('Amplitude');
 
-    % Plot the FFT for WSOLA
-    subplot(2,1,2);
-    plot(f, abs(Y_WSOLA)/max(abs(Y_WSOLA))); % Normalize FFT for better visualization
-    title(['FFT of Transposed Signal to ', targetNote, ' using WSOLA']);
-    xlabel('Frequency (Hz)');
-    ylabel('Magnitude (Normalized)');
-    xlim([0 2000]); % Focus on the relevant frequency range
-    % Save the FFT plots
-    outputFilename_FFT = ['FFT of C4 to ', targetNote, '.png'];
-    outputDir = './Part One graphs outputs';  
-    if ~exist(outputDir, 'dir')
-        mkdir(outputDir);  % Create the directory if it doesn't exist
-    end
+    % Plot the amplitude vs time for OLA
+    subplot(3,1,2);
+    plot((0:length(y_OLA)-1)/fs, y_OLA);
+    title(['Transposed Signal to ', targetNote, ' using OLA']);
+    xlabel('Time (s)');
+    ylabel('Amplitude');
 
-    saveas(gcf, fullfile(outputDir, outputFilename_FFT));
-    disp(['FFT plot saved to: ' outputFilename_FFT]);
+    % Plot the amplitude vs time for WSOLA
+    subplot(3,1,3);
+    plot((0:length(y_WSOLA)-1)/fs, y_WSOLA);
+    title(['Transposed Signal to ', targetNote, ' using WSOLA']);
+    xlabel('Time (s)');
+    ylabel('Amplitude');
+
+
+
+
 end
-
 function plot_and_save_pitch_shifted_signals(x, targetNote, y_OLA, y_WSOLA, fs)
     % Time vector for the original signal
     t = (0:length(y_OLA)-1) / fs;
@@ -91,21 +86,6 @@ function plot_and_save_pitch_shifted_signals(x, targetNote, y_OLA, y_WSOLA, fs)
     title(['Transposed Signal to ', targetNote, ' using WSOLA']);
     xlabel('Time (s)');
     ylabel('Amplitude');
-    
-    % Save the figure to the specified directory
-    outputDir = './Part One graphs outputs';  % Specify the output directory
-    if ~exist(outputDir, 'dir')
-        mkdir(outputDir);  % Create the directory if it doesn't exist
-    end
-
-    outputFilename = ['Amplitude vs Time for C4 to ', targetNote, '.png'];
-    saveas(gcf, fullfile(outputDir, outputFilename));
-
-    % Save the transposed signals for listening test
-    audioOutputDir = './Part One audio outputs';  % Specify the audio output directory
-    if ~exist(audioOutputDir, 'dir')
-        mkdir(audioOutputDir);  % Create the directory if it doesn't exist
-    end
 
     % Save the transposed signals for listening test
     outputFilename_OLA = ['C4 to ', targetNote, ' using OLA.wav'];

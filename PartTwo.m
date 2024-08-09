@@ -10,7 +10,7 @@ x = cos(2*pi*261*t) + 0.4*cos(2*pi*783*t);
 x = x';
 
 clear parameter
-parameter.synHop = Hs;
+parameter.synHop = Hs; % (Min is 1, with lots of time consumption. Max is 3N/4)
 %parameter.win = rectwin(N);
 parameter.win = win(N,2);
 parameter.tolerance = delta;
