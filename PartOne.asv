@@ -14,8 +14,8 @@ n_F3 = 1200 * log2(F3/C4);
 clear parameter
 % Using OLA for pitch shifting, tolerance is 0 in default.
 parameter.algTSM = @olaTSM;
-parameter.synHop = 1024;
-parameter.win = win(2048,2);
+parameter.synHop = 24;
+
 y_G4_OLA = pitchShiftViaTSM(x, n_G4, parameter);
 y_F3_OLA = pitchShiftViaTSM(x, n_F3, parameter);
 
